@@ -233,6 +233,20 @@ static std::string decode_fclass(uint16_t res) {
     case AluOp::kSltu: {
       return {static_cast<uint64_t>(a < b), false};
     }
+
+    // changes
+    case AluOp::kgcd: {
+        auto sa = static_cast<int64_t>(a);
+        auto sb = static_cast<int64_t>(b);
+        while(b != 0){
+          uint64_t temp = b;
+          b = a % b;
+          a = temp;
+        }
+        return {a, false};
+    }
+    // till here
+
     default: return {0, false};
   }
 }

@@ -56,6 +56,7 @@ enum class AluOp {
     kSraw, ///< Shift right arithmetic word operation.
     kSlt, ///< Set less than operation.
     kSltu, ///< Unsigned set less than operation.
+    kgcd, /// < GCD of 2 numbers
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -146,6 +147,7 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::kSra: os << "kSra"; break;
         case AluOp::kSlt: os << "kSlt"; break;
         case AluOp::kSltu: os << "kSltu"; break;
+        case AluOp::kgcd: os << "kgcd"; break; // kgcd
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;

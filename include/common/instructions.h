@@ -42,6 +42,7 @@ enum Instruction {
   ksra, 
   kor, 
   kand,
+  kgcd, // kgcd
 
   kaddw, 
   ksubw, 
@@ -240,6 +241,7 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::ksra,        0b0110011, -1, 0b101, -1, -1, 0b0100000), // ksra
   InstructionEncoding(Instruction::kor,         0b0110011, -1, 0b110, -1, -1, 0b0000000), // kor
   InstructionEncoding(Instruction::kand,        0b0110011, -1, 0b111, -1, -1, 0b0000000), // kand
+  InstructionEncoding(Instruction::kgcd,        0b0110011, -1, 0b000, -1, -1, 0b0000101), // kgcd
 
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
@@ -645,7 +647,7 @@ extern std::unordered_map<std::string, std::vector<SyntaxType>> instruction_synt
 
 bool isValidInstruction(const std::string &instruction);
 
-bool isValidRTypeInstruction(const std::string &name);
+bool isValidRTypeInstruction(const std::string &instruction);
 bool isValidITypeInstruction(const std::string &instruction);
 bool isValidI1TypeInstruction(const std::string &instruction);
 bool isValidI2TypeInstruction(const std::string &instruction);
