@@ -148,6 +148,14 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::kMul;
                 break;
             }
+            
+            // changes
+            case 0b0000101: { //kgcd
+                return alu::AluOp::kgcd;
+                break;
+            }
+            // till here
+
             }
             break;
         }

@@ -47,6 +47,7 @@ static std::string decode_fclass(uint16_t res) {
       auto sb = static_cast<int64_t>(b);
       int64_t result = sa + sb;
       bool overflow = __builtin_add_overflow(sa, sb, &result);
+      std :: cout << "ADD done\n";
       return {static_cast<uint64_t>(result), overflow};
     }
     case AluOp::kAddw: {
@@ -236,14 +237,19 @@ static std::string decode_fclass(uint16_t res) {
 
     // changes
     case AluOp::kgcd: {
-        auto sa = static_cast<int64_t>(a);
-        auto sb = static_cast<int64_t>(b);
-        while(b != 0){
-          uint64_t temp = b;
-          b = a % b;
-          a = temp;
-        }
-        return {a, false};
+      auto sa = static_cast<int64_t>(a);
+      auto sb = static_cast<int64_t>(b);
+      auto temp = static_cast<int64_t>(b);
+
+      while(sb != 0){
+        temp = sb;
+        sb = sa % sb;
+        sa = temp;
+      }
+      int64_t result = sa;
+
+      std :: cout << "GCD done\n";
+      return {static_cast<uint64_t>(result), false};
     }
     // till here
 

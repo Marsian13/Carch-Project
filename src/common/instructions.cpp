@@ -27,7 +27,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"sra", Instruction::ksra},
     {"slt", Instruction::kslt},
     {"sltu", Instruction::ksltu},
-    {"gcd", Instruction::kgcd},//added kgcd instruction
+    {"gcd", Instruction::kgcd}, // added kgcd instruction
 
     {"addw", Instruction::kaddw},
     {"subw", Instruction::ksubw},
@@ -180,7 +180,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 
 static const std::unordered_set<std::string> valid_instructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu","gcd",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -226,7 +226,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu","gcd",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd",
 
     // RV64
     "addw", "subw", "sllw", "srlw", "sraw",
@@ -287,7 +287,7 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 };
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu","gcd",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -629,7 +629,7 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"sra", {SyntaxType::O_GPR_C_GPR_C_GPR}},
     {"slt", {SyntaxType::O_GPR_C_GPR_C_GPR}},
     {"sltu", {SyntaxType::O_GPR_C_GPR_C_GPR}},
-    {"gcd", {SyntaxType::O_GPR_C_GPR_C_GPR}},
+    {"gcd", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // gcd
 
     {"addi", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"xori", {SyntaxType::O_GPR_C_GPR_C_I}},
