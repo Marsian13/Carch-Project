@@ -246,10 +246,30 @@ static std::string decode_fclass(uint16_t res) {
         sb = sa % sb;
         sa = temp;
       }
-      int64_t result = sa;
+      // int64_t result = sa;
 
       std :: cout << "GCD done\n";
-      return {static_cast<uint64_t>(result), false};
+      return {static_cast<uint64_t>(sa), false};
+    }
+
+    case AluOp::kisprime: {
+      auto n = static_cast<int64_t>(a);
+
+      bool result = true;
+      if (n <= 1) result = false;
+      else if (n <= 3) result = true;
+      else if (n % 2 == 0 || n % 3 == 0) result = false;
+      else {
+          for (int64_t i = 5; i * i <= n; i += 6) {
+              if (n % i == 0 || n % (i + 2) == 0) {
+                  result = false;
+                  break;
+              }
+          }
+      }
+
+      std::cout << "Prime check done\n";
+      return {static_cast<uint64_t>(result ? 1 : 0), false};
     }
     // till here
 

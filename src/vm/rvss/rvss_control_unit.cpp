@@ -154,6 +154,12 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::kgcd;
                 break;
             }
+
+            case 0b0000111: { // kisprime
+                return alu::AluOp::kisprime;
+                break;
+            }
+            
             // till here
 
             }

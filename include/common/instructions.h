@@ -43,6 +43,7 @@ enum Instruction {
   kor, 
   kand,
   kgcd, // kgcd
+  kisprime, // isprime
 
   kaddw, 
   ksubw, 
@@ -242,7 +243,7 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::kor,         0b0110011, -1, 0b110, -1, -1, 0b0000000), // kor
   InstructionEncoding(Instruction::kand,        0b0110011, -1, 0b111, -1, -1, 0b0000000), // kand
   InstructionEncoding(Instruction::kgcd,        0b0110011, -1, 0b000, -1, -1, 0b0000101), // kgcd
-
+  InstructionEncoding(Instruction::kisprime,    0b0110011, -1, 0b000, -1, -1, 0b0000111), // kisprime
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
   InstructionEncoding(Instruction::kmulh,       0b0110011, -1, 0b001, -1, -1, 0b0000001), // kmulh

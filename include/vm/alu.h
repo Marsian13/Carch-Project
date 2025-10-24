@@ -57,6 +57,7 @@ enum class AluOp {
     kSlt, ///< Set less than operation.
     kSltu, ///< Unsigned set less than operation.
     kgcd, /// < GCD of 2 numbers
+    kisprime, /// will return if a number is prime or not
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -148,6 +149,7 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::kSlt: os << "kSlt"; break;
         case AluOp::kSltu: os << "kSltu"; break;
         case AluOp::kgcd: os << "kgcd"; break; // kgcd
+        case AluOp::kisprime: os << "kisprime"; break; // kisprime
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;
