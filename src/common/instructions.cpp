@@ -181,7 +181,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 
 static const std::unordered_set<std::string> valid_instructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime"
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -227,7 +227,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime"
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
 
     // RV64
     "addw", "subw", "sllw", "srlw", "sraw",
@@ -288,7 +288,7 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 };
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime"
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",

@@ -2,4 +2,3 @@ addi x1, x0, 64
 addi x2, x0, 8
 gcd x3, x2, x1
 # add x3, x2, x1
-# isprime x4, x2, x0
