@@ -29,6 +29,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"sltu", Instruction::ksltu},
     {"gcd", Instruction::kgcd}, // added kgcd instruction
     {"isprime", Instruction::kisprime}, // added kisprime instruction
+    {"binexp", Instruction::kbinexp}, // added kbinexp instruction
 
     {"addw", Instruction::kaddw},
     {"subw", Instruction::ksubw},
@@ -181,7 +182,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 
 static const std::unordered_set<std::string> valid_instructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -227,7 +228,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
 
     // RV64
     "addw", "subw", "sllw", "srlw", "sraw",
@@ -288,7 +289,7 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 };
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -391,6 +392,7 @@ std::unordered_map<std::string, RTypeInstructionEncoding> R_type_instruction_enc
     {"sltu", {0b0110011, 0b011, 0b0000000}}, // O_GPR_C_GPR_C_GPR
     {"gcd", {0b0110011, 0b000, 0b0000101}}, // O_GPR_C_GPR_C_GPR
     {"isprime", {0b0110011, 0b000, 0b0000111}}, // O_GPR_C_GPR_C_GPR
+    {"binexp", {0b0110011, 0b000, 0b0000110}}, // O_GPR_C_GPR_C_GPR
 
     {"addw", {0b0111011, 0b000, 0b0000000}}, // O_GPR_C_GPR_C_GPR
     {"subw", {0b0111011, 0b000, 0b0100000}}, // O_GPR_C_GPR_C_GPR
@@ -633,6 +635,7 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"sltu", {SyntaxType::O_GPR_C_GPR_C_GPR}},
     {"gcd", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // gcd
     {"isprime", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // isprime
+    {"binexp", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // binexp 
 
     {"addi", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"xori", {SyntaxType::O_GPR_C_GPR_C_I}},

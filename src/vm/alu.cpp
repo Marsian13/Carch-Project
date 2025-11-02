@@ -47,7 +47,7 @@ static std::string decode_fclass(uint16_t res) {
       auto sb = static_cast<int64_t>(b);
       int64_t result = sa + sb;
       bool overflow = __builtin_add_overflow(sa, sb, &result);
-      std :: cout << "ADD done\n";
+      // std :: cout << "ADD done\n";
       return {static_cast<uint64_t>(result), overflow};
     }
     case AluOp::kAddw: {
@@ -248,7 +248,7 @@ static std::string decode_fclass(uint16_t res) {
       }
       // int64_t result = sa;
 
-      std :: cout << "GCD done\n";
+      // std :: cout << "GCD done\n";
       return {static_cast<uint64_t>(sa), false};
     }
 
@@ -268,9 +268,28 @@ static std::string decode_fclass(uint16_t res) {
           }
       }
 
-      std::cout << "Prime check done\n";
+      // std::cout << "Prime check done\n";
       return {static_cast<uint64_t>(result ? 1 : 0), false};
     }
+
+    case AluOp::kbinexp: { 
+      auto base = static_cast<int64_t>(a);
+      auto exp = static_cast<int64_t>(b);
+      auto result = static_cast<int64_t>(1);
+
+      while (exp > 0) {
+          if (exp & 1) {
+              result *= base; // multiply when exponent bit is 1
+          }
+          base *= base;       // square the base
+          exp >>= 1;          // shift exponent right by 1 (divide by 2)
+      }
+
+      std::cout << "Exponentiation done\n";
+      return {static_cast<uint64_t>(result), false};
+
+    }
+
     // till here
 
     default: return {0, false};
