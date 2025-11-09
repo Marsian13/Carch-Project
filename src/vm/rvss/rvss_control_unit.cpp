@@ -164,6 +164,12 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::kbinexp;
                 break;
             }
+
+            case 0b0001010: { // ksetmod
+                return alu::AluOp::ksetmod;
+                break;
+            }
+
             // till here
 
             }

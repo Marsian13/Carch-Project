@@ -45,6 +45,7 @@ enum Instruction {
   kgcd, // kgcd
   kisprime, // kisprime
   kbinexp, // kbinexp
+  ksetmod, // ksetmod
 
   kaddw, 
   ksubw, 
@@ -246,6 +247,7 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::kgcd,        0b0110011, -1, 0b000, -1, -1, 0b0000101), // kgcd
   InstructionEncoding(Instruction::kisprime,    0b0110011, -1, 0b000, -1, -1, 0b0000111), // kisprime
   InstructionEncoding(Instruction::kbinexp,     0b0110011, -1, 0b000, -1, -1, 0b0000110), // kbinexp
+  InstructionEncoding(Instruction::ksetmod,     0b0110011, -1, 0b000, -1, -1, 0b0001010), // ksetmod
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
   InstructionEncoding(Instruction::kmulh,       0b0110011, -1, 0b001, -1, -1, 0b0000001), // kmulh

@@ -59,6 +59,7 @@ enum class AluOp {
     kgcd, /// < GCD of 2 numbers
     kisprime, /// will return if a number is prime or not
     kbinexp, /// binary exponentiation
+    ksetmod, /// seting mod for invmod
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -152,6 +153,7 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::kgcd: os << "kgcd"; break; // kgcd
         case AluOp::kisprime: os << "kisprime"; break; // kisprime
         case AluOp::kbinexp: os << "kbinexp"; break; // kbinexp
+        case AluOp::ksetmod: os << "ksetmod"; break; // ksetmod
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;

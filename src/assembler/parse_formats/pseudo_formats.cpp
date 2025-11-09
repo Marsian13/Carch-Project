@@ -262,6 +262,63 @@ bool Parser::parse_pseudo() {
     }
     return false;
   }
+
+  // invmod
+  else if (currentToken().value == "invmod") {
+    if (peekToken(1).line_number == currentToken().line_number
+        && peekToken(1).type == TokenType::GP_REGISTER
+        && peekToken(2).line_number == currentToken().line_number
+        && peekToken(2).type == TokenType::COMMA
+        && peekToken(3).line_number == currentToken().line_number
+        && peekToken(3).type == TokenType::GP_REGISTER
+        && peekToken(4).line_number == currentToken().line_number
+        && peekToken(4).type == TokenType::COMMA
+        && peekToken(5).line_number == currentToken().line_number
+        && peekToken(5).type == TokenType::GP_REGISTER
+        && (peekToken(6).type == TokenType::EOF_ || peekToken(6).line_number != currentToken().line_number)) {
+
+        std::string rd = reg_alias_to_name.at(peekToken(1).value);
+        std::string rs1 = reg_alias_to_name.at(peekToken(3).value);
+        std::string rs2 = reg_alias_to_name.at(peekToken(5).value);
+
+        // Step 1: Computing exponent = rs2 - 2 → t2
+        ICUnit subInst;
+        subInst.setOpcode("addi");
+        subInst.setRd("t2");
+        subInst.setRs1(rs2);
+        subInst.setImm("-2");
+        subInst.setLineNumber(currentToken().line_number);
+        subInst.setInstructionIndex(instruction_index_++);
+        intermediate_code_.emplace_back(subInst, true);
+
+        // Step 2: Seting the modulus
+        ICUnit setmodInst;
+        setmodInst.setOpcode("setmod");
+        setmodInst.setRd("x0");
+        setmodInst.setRs1(rs2); // rs2 = modulus register
+        setmodInst.setRs2("x0");
+        setmodInst.setLineNumber(currentToken().line_number);
+        setmodInst.setInstructionIndex(instruction_index_++);
+        intermediate_code_.emplace_back(setmodInst, true);
+
+        // Step 3: Computing candidate modular inverse → rd using binary exponentiation
+        ICUnit binexpInst;
+        binexpInst.setOpcode("binexp");
+        binexpInst.setRd(rd);
+        binexpInst.setRs1(rs1);
+        binexpInst.setRs2("t2"); // Use the pre-calculated exponent (modulus - 2)
+        binexpInst.setLineNumber(currentToken().line_number);
+        binexpInst.setInstructionIndex(instruction_index_++);
+        intermediate_code_.emplace_back(binexpInst, true);
+
+        // bookkeeping
+        instruction_number_line_number_mapping_[instruction_index_] = currentToken().line_number;
+        skipCurrentLine();
+        return true;
+    }
+    return false;
+}
+  
   return false;
 }
 

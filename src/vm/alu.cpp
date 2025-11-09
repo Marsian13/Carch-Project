@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 
+static int64_t current_modulus = 1;
+
 namespace alu {
 
 static std::string decode_fclass(uint16_t res) {
@@ -248,7 +250,7 @@ static std::string decode_fclass(uint16_t res) {
       }
       // int64_t result = sa;
 
-      // std :: cout << "GCD done\n";
+      std :: cout << "GCD done, it will give: " << sa << "\n";
       return {static_cast<uint64_t>(sa), false};
     }
 
@@ -268,26 +270,38 @@ static std::string decode_fclass(uint16_t res) {
           }
       }
 
-      // std::cout << "Prime check done\n";
+      std::cout << "Prime check done, it will give: " << (result ? 1 : 0) << "\n";
       return {static_cast<uint64_t>(result ? 1 : 0), false};
     }
 
     case AluOp::kbinexp: { 
       auto base = static_cast<int64_t>(a);
       auto exp = static_cast<int64_t>(b);
+
+      auto mod  = current_modulus;    // use last set modulus
+      if (mod <= 0) mod = 1; // safety: prevents mod 0
       auto result = static_cast<int64_t>(1);
 
+      std::cout << "  DEBUG ALU BINEXP: Base=" << base << ", Exponent=" << exp << ", Modulus=" << mod << "\n";
+      base %= mod;
+
       while (exp > 0) {
-          if (exp & 1) {
-              result *= base; // multiply when exponent bit is 1
-          }
-          base *= base;       // square the base
-          exp >>= 1;          // shift exponent right by 1 (divide by 2)
+        if (exp & 1)
+            result = (result * base) % mod;
+        base = (base * base) % mod;
+        exp >>= 1;
       }
 
-      std::cout << "Exponentiation done\n";
+      std::cout << "Exponentiation done, it will give: " << result
+                << " (mod " << current_modulus << ")\n";
       return {static_cast<uint64_t>(result), false};
+    }
 
+    case AluOp::ksetmod: {
+      current_modulus = static_cast<int64_t>(a);
+      if (current_modulus <= 0) current_modulus = 1; // safety fallback
+      std::cout << "Modulus set to: " << current_modulus << "\n";
+    return {static_cast<uint64_t>(current_modulus), false};
     }
 
     // till here

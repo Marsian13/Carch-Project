@@ -30,6 +30,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"gcd", Instruction::kgcd}, // added kgcd instruction
     {"isprime", Instruction::kisprime}, // added kisprime instruction
     {"binexp", Instruction::kbinexp}, // added kbinexp instruction
+    {"setmod", Instruction::ksetmod}, // added ksetmod instruction
 
     {"addw", Instruction::kaddw},
     {"subw", Instruction::ksubw},
@@ -182,7 +183,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 
 static const std::unordered_set<std::string> valid_instructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp", "setmod",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -195,7 +196,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 
     "csrrw", "csrrs", "csrrc", "csrrwi", "csrrsi", "csrrci",
 
-    "la", "nop", "li", "mv", "not", "neg", "negw",
+    "la", "nop", "li", "mv", "not", "neg", "negw", "invmod",
     "sext.w", "seqz", "snez", "sltz", "sgtz",
     "beqz", "bnez", "blez", "bgez", "bltz", "bgtz",
     "bgt", "ble", "bgtu", "bleu",
@@ -228,7 +229,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp", "setmod",
 
     // RV64
     "addw", "subw", "sllw", "srlw", "sraw",
@@ -281,7 +282,7 @@ static const std::unordered_set<std::string> JTypeInstructions = {
 };
 
 static const std::unordered_set<std::string> PseudoInstructions = {
-    "la", "nop", "li", "mv", "not", "neg", "negw",
+    "la", "nop", "li", "mv", "not", "neg", "negw", "invmod",
     "sext.w", "seqz", "snez", "sltz", "sgtz",
     "beqz", "bnez", "blez", "bgez", "bltz", "bgtz",
     "bgt", "ble", "bgtu", "bleu",
@@ -289,7 +290,7 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 };
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
-    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp",
+    "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", "gcd", "isprime", "binexp", "setmod",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
@@ -393,6 +394,7 @@ std::unordered_map<std::string, RTypeInstructionEncoding> R_type_instruction_enc
     {"gcd", {0b0110011, 0b000, 0b0000101}}, // O_GPR_C_GPR_C_GPR
     {"isprime", {0b0110011, 0b000, 0b0000111}}, // O_GPR_C_GPR_C_GPR
     {"binexp", {0b0110011, 0b000, 0b0000110}}, // O_GPR_C_GPR_C_GPR
+    {"setmod", {0b0110011, 0b000, 0b0001010}}, // O_GPR_C_GPR_C_GPR
 
     {"addw", {0b0111011, 0b000, 0b0000000}}, // O_GPR_C_GPR_C_GPR
     {"subw", {0b0111011, 0b000, 0b0100000}}, // O_GPR_C_GPR_C_GPR
@@ -636,6 +638,7 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"gcd", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // gcd
     {"isprime", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // isprime
     {"binexp", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // binexp 
+    {"setmod", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // setmod 
 
     {"addi", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"xori", {SyntaxType::O_GPR_C_GPR_C_I}},
@@ -694,6 +697,7 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"li", {SyntaxType::PSEUDO}},
     {"la", {SyntaxType::PSEUDO}},
     {"mv", {SyntaxType::PSEUDO}},
+    {"invmod", {SyntaxType::PSEUDO}}, // invmod
     {"not", {SyntaxType::PSEUDO}},
     {"neg", {SyntaxType::PSEUDO}},
     {"negw", {SyntaxType::PSEUDO}},
@@ -979,6 +983,7 @@ std::string getExpectedSyntaxes(const std::string &opcode) {
       {"nop", "nop"},
       {"li", "li <reg>, <imm>"},
       {"mv", "mv <reg>, <reg>"},
+      {"invmod", "invmod <reg>, <reg>, <reg>"}, // invmod
       {"not", "not <reg>, <reg>"},
       {"neg", "neg <reg>, <reg>"},
       {"seqz", "seqz <reg>, <reg>"},
