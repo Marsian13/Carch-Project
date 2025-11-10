@@ -277,48 +277,81 @@ bool Parser::parse_pseudo() {
         && peekToken(5).type == TokenType::GP_REGISTER
         && (peekToken(6).type == TokenType::EOF_ || peekToken(6).line_number != currentToken().line_number)) {
 
-        std::string rd = reg_alias_to_name.at(peekToken(1).value);
-        std::string rs1 = reg_alias_to_name.at(peekToken(3).value);
-        std::string rs2 = reg_alias_to_name.at(peekToken(5).value);
+      std::string rd  = reg_alias_to_name.at(peekToken(1).value);
+      std::string rs1 = reg_alias_to_name.at(peekToken(3).value);
+      std::string rs2 = reg_alias_to_name.at(peekToken(5).value);
 
-        // Step 1: Computing exponent = rs2 - 2 → t2
-        ICUnit subInst;
-        subInst.setOpcode("addi");
-        subInst.setRd("t2");
-        subInst.setRs1(rs2);
-        subInst.setImm("-2");
-        subInst.setLineNumber(currentToken().line_number);
-        subInst.setInstructionIndex(instruction_index_++);
-        intermediate_code_.emplace_back(subInst, true);
+      // 1️ setmod x0, rs2, x0
+      {
+        ICUnit block;
+        block.setOpcode("setmod");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd("x0");
+        block.setRs1(rs2);
+        block.setRs2("x0");
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
 
-        // Step 2: Seting the modulus
-        ICUnit setmodInst;
-        setmodInst.setOpcode("setmod");
-        setmodInst.setRd("x0");
-        setmodInst.setRs1(rs2); // rs2 = modulus register
-        setmodInst.setRs2("x0");
-        setmodInst.setLineNumber(currentToken().line_number);
-        setmodInst.setInstructionIndex(instruction_index_++);
-        intermediate_code_.emplace_back(setmodInst, true);
+      // 2️ gcd t0, rs1, rs2
+      {
+        ICUnit block;
+        block.setOpcode("gcd");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd("t0");
+        block.setRs1(rs1);
+        block.setRs2(rs2);
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
 
-        // Step 3: Computing candidate modular inverse → rd using binary exponentiation
-        ICUnit binexpInst;
-        binexpInst.setOpcode("binexp");
-        binexpInst.setRd(rd);
-        binexpInst.setRs1(rs1);
-        binexpInst.setRs2("t2"); // Use the pre-calculated exponent (modulus - 2)
-        binexpInst.setLineNumber(currentToken().line_number);
-        binexpInst.setInstructionIndex(instruction_index_++);
-        intermediate_code_.emplace_back(binexpInst, true);
+      // 3️ isprime t1, rs2, x0 
+      {
+        ICUnit block;
+        block.setOpcode("isprime");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd("t1");
+        block.setRs1(rs2);
+        block.setRs2("x0");
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
 
-        // bookkeeping
-        instruction_number_line_number_mapping_[instruction_index_] = currentToken().line_number;
-        skipCurrentLine();
-        return true;
+      // 4️ binexp rd, rs1, rs2-2   (Fermat’s little theorem)
+      {
+        ICUnit subBlock;
+        subBlock.setOpcode("addi");
+        subBlock.setLineNumber(currentToken().line_number);
+        subBlock.setInstructionIndex(instruction_index_);
+        subBlock.setRd(rs2);
+        subBlock.setRs1(rs2);
+        subBlock.setImm("-2");   // t2 = rs2 - 2
+        intermediate_code_.emplace_back(subBlock, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = subBlock.getLineNumber();
+      }
+
+      {
+        ICUnit block;
+        block.setOpcode("binexp");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd(rd);
+        block.setRs1(rs1);
+        block.setRs2(rs2);
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
+
+      skipCurrentLine();
+      return true;
     }
     return false;
-}
-  
+  }
+
+
   return false;
 }
 

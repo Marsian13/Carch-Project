@@ -283,7 +283,8 @@ static std::string decode_fclass(uint16_t res) {
       auto result = static_cast<int64_t>(1);
 
       std::cout << "  DEBUG ALU BINEXP: Base=" << base << ", Exponent=" << exp << ", Modulus=" << mod << "\n";
-      base %= mod;
+      // Ensure base is in [0, mod-1] range
+      base = (base % mod + mod) % mod;
 
       while (exp > 0) {
         if (exp & 1)
