@@ -281,7 +281,47 @@ bool Parser::parse_pseudo() {
       std::string rs1 = reg_alias_to_name.at(peekToken(3).value);
       std::string rs2 = reg_alias_to_name.at(peekToken(5).value);
 
-      // 1️ setmod x0, rs2, x0
+      // our inst is invmod rd, rs1, rs2
+      // invmod ans, a, m
+      
+      // step 1: gcd ans, a, m
+      {
+        ICUnit block;
+        block.setOpcode("gcd");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd(rd);
+        block.setRs1(rs1);
+        block.setRs2(rs2);
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+            }
+      // step 2: check ans, ans, x0 -> if gcd != 1 then ans = -1 else ans itself
+      {
+        ICUnit block;
+        block.setOpcode("check");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd(rd);
+        block.setRs1(rd);
+        block.setRs2("x0");
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
+      // step 3: isprime ans, m, ans -> if ans is already -1 it will keep -1 also in the case if its not a prime
+      {
+        ICUnit block;
+        block.setOpcode("isprime");
+        block.setLineNumber(currentToken().line_number);
+        block.setInstructionIndex(instruction_index_);
+        block.setRd(rd);
+        block.setRs1(rs2);
+        block.setRs2(rd);
+        intermediate_code_.emplace_back(block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
+      }
+
+      // step 4: setmod x0, m, ans -> if ans is -1 then will set global variable as -1
       {
         ICUnit block;
         block.setOpcode("setmod");
@@ -289,50 +329,24 @@ bool Parser::parse_pseudo() {
         block.setInstructionIndex(instruction_index_);
         block.setRd("x0");
         block.setRs1(rs2);
-        block.setRs2("x0");
+        block.setRs2(rd);
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
       }
-
-      // 2️ gcd t0, rs1, rs2
+      // step 5: addi m, m, -2 -> as we are using Fermat’s little theorem
       {
-        ICUnit block;
-        block.setOpcode("gcd");
-        block.setLineNumber(currentToken().line_number);
-        block.setInstructionIndex(instruction_index_);
-        block.setRd("t0");
-        block.setRs1(rs1);
-        block.setRs2(rs2);
-        intermediate_code_.emplace_back(block, true);
-        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
-      }
+        ICUnit Block;
+        Block.setOpcode("addi");
+        Block.setLineNumber(currentToken().line_number);
+        Block.setInstructionIndex(instruction_index_);
+        Block.setRd(rs2);
+        Block.setRs1(rs2);
+        Block.setImm("-2");   // rs2 = rs2 - 2
+        intermediate_code_.emplace_back(Block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = Block.getLineNumber();
+            }
 
-      // 3️ isprime t1, rs2, x0 
-      {
-        ICUnit block;
-        block.setOpcode("isprime");
-        block.setLineNumber(currentToken().line_number);
-        block.setInstructionIndex(instruction_index_);
-        block.setRd("t1");
-        block.setRs1(rs2);
-        block.setRs2("x0");
-        intermediate_code_.emplace_back(block, true);
-        instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
-      }
-
-      // 4️ binexp rd, rs1, rs2-2   (Fermat’s little theorem)
-      {
-        ICUnit subBlock;
-        subBlock.setOpcode("addi");
-        subBlock.setLineNumber(currentToken().line_number);
-        subBlock.setInstructionIndex(instruction_index_);
-        subBlock.setRd(rs2);
-        subBlock.setRs1(rs2);
-        subBlock.setImm("-2");   // t2 = rs2 - 2
-        intermediate_code_.emplace_back(subBlock, true);
-        instruction_number_line_number_mapping_[instruction_index_++] = subBlock.getLineNumber();
-      }
-
+      // step 6: binexp ans, a, m-2 -> here if ans is -1 that means invmod do not exist
       {
         ICUnit block;
         block.setOpcode("binexp");
@@ -344,7 +358,18 @@ bool Parser::parse_pseudo() {
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
       }
-
+      // step 7: addi m, m, 2 -> restoring the value of m
+      {
+        ICUnit Block;
+        Block.setOpcode("addi");
+        Block.setLineNumber(currentToken().line_number);
+        Block.setInstructionIndex(instruction_index_);
+        Block.setRd(rs2);
+        Block.setRs1(rs2);
+        Block.setImm("2");   // rs2 = rs2 + 2
+        intermediate_code_.emplace_back(Block, true);
+        instruction_number_line_number_mapping_[instruction_index_++] = Block.getLineNumber();
+      }
       skipCurrentLine();
       return true;
     }

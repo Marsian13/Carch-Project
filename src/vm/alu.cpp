@@ -256,9 +256,11 @@ static std::string decode_fclass(uint16_t res) {
 
     case AluOp::kisprime: {
       auto n = static_cast<int64_t>(a);
-
+      auto sb = static_cast<int64_t>(b);
       bool result = true;
-      if (n <= 1) result = false;
+
+      if(sb == -1) result = false;
+      else if (n <= 1) result = false;
       else if (n <= 3) result = true;
       else if (n % 2 == 0 || n % 3 == 0) result = false;
       else {
@@ -270,27 +272,28 @@ static std::string decode_fclass(uint16_t res) {
           }
       }
 
-      std::cout << "Prime check done, it will give: " << (result ? 1 : 0) << "\n";
-      return {static_cast<uint64_t>(result ? 1 : 0), false};
+      std::cout << "Prime check done, it will give: " << (result ? 1 : -1) << "\n";
+      return {static_cast<uint64_t>(result ? 1 : -1), false};
     }
 
     case AluOp::kbinexp: { 
       auto base = static_cast<int64_t>(a);
       auto exp = static_cast<int64_t>(b);
 
-      auto mod  = current_modulus;    // use last set modulus
-      if (mod <= 0) mod = 1; // safety: prevents mod 0
+      auto mod  = current_modulus;    // using last set modulus
       auto result = static_cast<int64_t>(1);
-
-      std::cout << "  DEBUG ALU BINEXP: Base=" << base << ", Exponent=" << exp << ", Modulus=" << mod << "\n";
-      // Ensure base is in [0, mod-1] range
-      base = (base % mod + mod) % mod;
-
-      while (exp > 0) {
-        if (exp & 1)
-            result = (result * base) % mod;
-        base = (base * base) % mod;
-        exp >>= 1;
+      
+      if (mod == -1) result = -1;
+      else {
+        // avoiding overflow
+        base = (base % mod + mod) % mod;
+  
+        while (exp > 0) {
+          if (exp & 1)
+              result = (result * base) % mod;
+          base = (base * base) % mod;
+          exp >>= 1;
+        }
       }
 
       std::cout << "Exponentiation done, it will give: " << result
@@ -300,10 +303,26 @@ static std::string decode_fclass(uint16_t res) {
 
     case AluOp::ksetmod: {
       current_modulus = static_cast<int64_t>(a);
-      if (current_modulus <= 0) current_modulus = 1; // safety fallback
+      auto sb = static_cast<int64_t>(b);
+
+      if(sb == -1) current_modulus = -1;
+
       std::cout << "Modulus set to: " << current_modulus << "\n";
     return {static_cast<uint64_t>(current_modulus), false};
     }
+
+    case AluOp::kcheck: {
+      auto sa = static_cast<int64_t>(a);
+      auto result = static_cast<int64_t>(1);
+
+      if(sa != 1) result = -1;
+      else result = sa;
+
+      std::cout << "Check done and got to: " << result << "\n";
+
+    return {static_cast<uint64_t>(result), false};
+    }
+
 
     // till here
 

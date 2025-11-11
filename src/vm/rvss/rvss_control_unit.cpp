@@ -170,6 +170,10 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 break;
             }
 
+            case 0b0001111: { // kcheck
+                return alu::AluOp::kcheck;
+                break;
+            }
             // till here
 
             }
