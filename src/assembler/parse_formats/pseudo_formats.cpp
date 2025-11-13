@@ -295,7 +295,8 @@ bool Parser::parse_pseudo() {
         block.setRs2(rs2);
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
-            }
+      }
+      
       // step 2: check ans, ans, x0 -> if gcd != 1 then ans = -1 else ans itself
       {
         ICUnit block;
@@ -308,6 +309,7 @@ bool Parser::parse_pseudo() {
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
       }
+
       // step 3: isprime ans, m, ans -> if ans is already -1 it will keep -1 also in the case if its not a prime
       {
         ICUnit block;
@@ -333,6 +335,7 @@ bool Parser::parse_pseudo() {
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
       }
+
       // step 5: addi m, m, -2 -> as we are using Fermat’s little theorem
       {
         ICUnit Block;
@@ -344,7 +347,7 @@ bool Parser::parse_pseudo() {
         Block.setImm("-2");   // rs2 = rs2 - 2
         intermediate_code_.emplace_back(Block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = Block.getLineNumber();
-            }
+      }
 
       // step 6: binexp ans, a, m-2 -> here if ans is -1 that means invmod do not exist
       {
@@ -358,6 +361,7 @@ bool Parser::parse_pseudo() {
         intermediate_code_.emplace_back(block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = block.getLineNumber();
       }
+
       // step 7: addi m, m, 2 -> restoring the value of m
       {
         ICUnit Block;
@@ -370,6 +374,7 @@ bool Parser::parse_pseudo() {
         intermediate_code_.emplace_back(Block, true);
         instruction_number_line_number_mapping_[instruction_index_++] = Block.getLineNumber();
       }
+
       skipCurrentLine();
       return true;
     }

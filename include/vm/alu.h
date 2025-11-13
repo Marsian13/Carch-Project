@@ -61,6 +61,7 @@ enum class AluOp {
     kbinexp, /// binary exponentiation
     ksetmod, /// seting mod for invmod
     kcheck, /// check for gcd != 1
+    krand, /// random number generator
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -156,6 +157,7 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::kbinexp: os << "kbinexp"; break; // kbinexp
         case AluOp::ksetmod: os << "ksetmod"; break; // ksetmod
         case AluOp::kcheck: os << "kcheck"; break; // kcheck
+        case AluOp::krand: os << "krand"; break; // krand
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;

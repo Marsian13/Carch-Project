@@ -11,6 +11,8 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 static int64_t current_modulus = 1;
 
@@ -248,9 +250,8 @@ static std::string decode_fclass(uint16_t res) {
         sb = sa % sb;
         sa = temp;
       }
-      // int64_t result = sa;
 
-      std :: cout << "GCD done, it will give: " << sa << "\n";
+      // std :: cout << "GCD done, it will give: " << sa << "\n";
       return {static_cast<uint64_t>(sa), false};
     }
 
@@ -272,7 +273,7 @@ static std::string decode_fclass(uint16_t res) {
           }
       }
 
-      std::cout << "Prime check done, it will give: " << (result ? 1 : -1) << "\n";
+      // std::cout << "Prime check done, it will give: " << (result ? 1 : -1) << "\n";
       return {static_cast<uint64_t>(result ? 1 : -1), false};
     }
 
@@ -296,8 +297,8 @@ static std::string decode_fclass(uint16_t res) {
         }
       }
 
-      std::cout << "Exponentiation done, it will give: " << result
-                << " (mod " << current_modulus << ")\n";
+      // std::cout << "Exponentiation done, it will give: " << result
+      //           << " (mod " << current_modulus << ")\n";
       return {static_cast<uint64_t>(result), false};
     }
 
@@ -307,7 +308,7 @@ static std::string decode_fclass(uint16_t res) {
 
       if(sb == -1) current_modulus = -1;
 
-      std::cout << "Modulus set to: " << current_modulus << "\n";
+      // std::cout << "Modulus set to: " << current_modulus << "\n";
     return {static_cast<uint64_t>(current_modulus), false};
     }
 
@@ -318,11 +319,29 @@ static std::string decode_fclass(uint16_t res) {
       if(sa != 1) result = -1;
       else result = sa;
 
-      std::cout << "Check done and got to: " << result << "\n";
-
+      // std::cout << "Check done and got to: " << result << "\n";
     return {static_cast<uint64_t>(result), false};
     }
 
+    case AluOp::krand: {
+      static bool seeded = false;
+      auto result = static_cast<int64_t>(1);
+
+      if (!seeded) {
+          std::srand(static_cast<unsigned int>(std::time(nullptr)));
+          seeded = true;
+      }
+
+      auto lower = static_cast<int64_t>(a);
+      auto upper = static_cast<int64_t>(b);
+
+      if (lower > upper) std::swap(lower, upper);
+
+      // Generate random number in range [lower, upper]
+      result = lower + std::rand() % (upper - lower + 1);
+
+      return {static_cast<uint64_t>(result), false};
+    }
 
     // till here
 

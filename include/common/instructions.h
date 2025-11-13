@@ -47,6 +47,7 @@ enum Instruction {
   kbinexp, // kbinexp
   ksetmod, // ksetmod
   kcheck, // kcheck
+  krand, // krand
 
   kaddw, 
   ksubw, 
@@ -250,6 +251,7 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::kbinexp,     0b0110011, -1, 0b000, -1, -1, 0b0000110), // kbinexp
   InstructionEncoding(Instruction::ksetmod,     0b0110011, -1, 0b000, -1, -1, 0b0001010), // ksetmod
   InstructionEncoding(Instruction::kcheck,      0b0110011, -1, 0b000, -1, -1, 0b0001111), // kcheck
+  InstructionEncoding(Instruction::krand,       0b0110011, -1, 0b000, -1, -1, 0b0001100), // krand
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
   InstructionEncoding(Instruction::kmulh,       0b0110011, -1, 0b001, -1, -1, 0b0000001), // kmulh

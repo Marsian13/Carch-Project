@@ -174,6 +174,11 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::kcheck;
                 break;
             }
+
+            case 0b0001100: { // krand
+                return alu::AluOp::krand;
+                break;
+            }
             // till here
 
             }
