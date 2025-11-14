@@ -367,6 +367,35 @@ static std::string decode_fclass(uint16_t res) {
       result = (sa << sh) | (sa >> (64 - sh));     // rol formula
 
       return {static_cast<uint64_t>(result), false};
+    }
+
+    case AluOp::kandn: {
+      auto sa = static_cast<uint64_t>(a);     
+      auto sb = static_cast<uint64_t>(b);     
+
+      auto result = static_cast<int64_t>(1);  // result
+      result = sa & (~sb);
+      return {static_cast<uint64_t>(result), false};
+    } 
+    
+    case AluOp::korn: {
+      auto sa = static_cast<uint64_t>(a);     
+      auto sb = static_cast<uint64_t>(b);     
+
+      auto result = static_cast<int64_t>(1);  // result
+      result = sa | (~sb);
+      return {static_cast<uint64_t>(result), false};
+    }    
+
+    case AluOp::kbrev: {
+      auto sb = static_cast<uint64_t>(b);     
+
+      auto rev = static_cast<int64_t>(0);  // result
+      for (int i = 0; i < 64; i++) {
+        rev <<= 1;                  // making space for next bit
+        rev |= (sb >> i) & 1ULL;    // extracting bit i from original and inserting
+      }
+      return {static_cast<uint64_t>(rev), false};
     }    
     // till here
 

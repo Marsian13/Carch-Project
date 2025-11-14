@@ -64,6 +64,9 @@ enum class AluOp {
     krand, /// random number generator
     kror, /// kror for rotate right
     krol, /// krol for rotate left
+    kbrev, /// kbrev to rotate bits
+    kandn, /// kandn to and not 
+    korn, /// korn to or not
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -162,6 +165,9 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::krand: os << "krand"; break; // krand
         case AluOp::kror: os << "kror"; break; // kror
         case AluOp::krol: os << "krol"; break; // krol
+        case AluOp::kbrev: os << "kbrev"; break; // kbrev
+        case AluOp::kandn: os << "kandn"; break; // kandn
+        case AluOp::korn: os << "korn"; break; // korn
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;

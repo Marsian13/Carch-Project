@@ -50,6 +50,9 @@ enum Instruction {
   krand, // krand
   kror, // kror
   krol, // krol
+  kbrev, // kbrev
+  kandn, // kandn
+  korn, // korn
 
   kaddw, 
   ksubw, 
@@ -72,6 +75,9 @@ enum Instruction {
   ksraiw,
   krori, // krori
   kroli, // kroli
+  kbrevi, // kbrevi
+  kandni, // kandni
+  korni, // korni
   klb, 
   klh, 
   klw, 
@@ -258,6 +264,9 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::krand,       0b0110011, -1, 0b000, -1, -1, 0b0001100), // krand
   InstructionEncoding(Instruction::kror,        0b0110011, -1, 0b000, -1, -1, 0b0000011), // kror
   InstructionEncoding(Instruction::krol,        0b0110011, -1, 0b000, -1, -1, 0b0000010), // krol
+  InstructionEncoding(Instruction::kbrev,       0b0110011, -1, 0b000, -1, -1, 0b1000000), // kbrev
+  InstructionEncoding(Instruction::kandn,       0b0110011, -1, 0b000, -1, -1, 0b0110000), // kandn
+  InstructionEncoding(Instruction::korn,        0b0110011, -1, 0b000, -1, -1, 0b1100000), // korn
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
   InstructionEncoding(Instruction::kmulh,       0b0110011, -1, 0b001, -1, -1, 0b0000001), // kmulh
@@ -293,6 +302,9 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::ksrai,       0b0010011, -1, 0b101, -1, -1, 0b0100000), // ksrai
   InstructionEncoding(Instruction::krori,       0b0010011, -1, 0b101, -1, -1, 0b0000010), // krori
   InstructionEncoding(Instruction::kroli,       0b0010011, -1, 0b101, -1, -1, 0b0000110), // kroli
+  InstructionEncoding(Instruction::kbrevi,       0b0010011, -1, 0b101, -1, -1, 0b1000000), // kbrevi
+  InstructionEncoding(Instruction::kandni,       0b0010011, -1, 0b101, -1, -1, 0b0110000), // kandni
+  InstructionEncoding(Instruction::korni,       0b0010011, -1, 0b101, -1, -1,  0b1100000), // korni
   InstructionEncoding(Instruction::kori,        0b0010011, -1, 0b110, -1, -1, -1), // kori
   InstructionEncoding(Instruction::kandi,       0b0010011, -1, 0b111, -1, -1, -1), // kandi
 

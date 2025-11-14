@@ -190,6 +190,21 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::krol;
                 break;
             }
+
+            case 0b1000000: {// brev
+                return alu::AluOp::kbrev;
+                break;
+            }
+
+            case 0b0110000: {// andn
+                return alu::AluOp::kandn;
+                break;
+            }
+
+            case 0b1100000: {// orn
+                return alu::AluOp::korn;
+                break;
+            }
             // till here
 
             }
@@ -343,6 +358,18 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
             }
             case 0b0000110: {// roli
                 return alu::AluOp::krol;
+                break;
+            }
+            case 0b1000000: {// brevi
+                return alu::AluOp::kbrev;
+                break;
+            }
+            case 0b0110000: {// andni
+                return alu::AluOp::kandn;
+                break;
+            }
+            case 0b1100000: {// orni
+                return alu::AluOp::korn;
                 break;
             }
             // till here
