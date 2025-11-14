@@ -62,6 +62,8 @@ enum class AluOp {
     ksetmod, /// seting mod for invmod
     kcheck, /// check for gcd != 1
     krand, /// random number generator
+    kror, /// kror for rotate right
+    krol, /// krol for rotate left
 
     // Floating point operations
     kFmadd_s, ///< Floating point multiply-add single operation.
@@ -158,6 +160,8 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::ksetmod: os << "ksetmod"; break; // ksetmod
         case AluOp::kcheck: os << "kcheck"; break; // kcheck
         case AluOp::krand: os << "krand"; break; // krand
+        case AluOp::kror: os << "kror"; break; // kror
+        case AluOp::krol: os << "krol"; break; // krol
         case AluOp::kAddw: os << "kAddw"; break;
         case AluOp::kSubw: os << "kSubw"; break;
         case AluOp::kMulw: os << "kMulw"; break;

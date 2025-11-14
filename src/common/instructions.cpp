@@ -33,6 +33,8 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"setmod", Instruction::ksetmod}, // added ksetmod instruction
     {"check", Instruction::kcheck}, // added kcheck instruction
     {"random", Instruction::krand}, // added krand instruction
+    {"ror", Instruction::kror}, // added kror instruction
+    {"rol", Instruction::krol}, // added krol instruction
 
     {"addw", Instruction::kaddw},
     {"subw", Instruction::ksubw},
@@ -66,6 +68,8 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"slli", Instruction::kslli},
     {"srli", Instruction::ksrli},
     {"srai", Instruction::ksrai},
+    {"rori", Instruction::krori}, // added krori instruction
+    {"roli", Instruction::kroli}, // added kroli instruction
     {"slti", Instruction::kslti},
     {"sltiu", Instruction::ksltiu},
 
@@ -186,10 +190,11 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 static const std::unordered_set<std::string> valid_instructions = {
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu",
-    "gcd", "isprime", "binexp", "setmod", "check", "random",
+    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
+    "rori", "roli",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "sb", "sh", "sw", "sd",
     "beq", "bne", "blt", "bge", "bltu", "bgeu",
@@ -233,7 +238,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", 
-    "gcd", "isprime", "binexp", "setmod", "check", "random",
+    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
 
     // RV64
     "addw", "subw", "sllw", "srlw", "sraw",
@@ -249,6 +254,7 @@ static const std::unordered_set<std::string> RTypeInstructions = {
 static const std::unordered_set<std::string> ITypeInstructions = {
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
+    "rori", "roli",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "jalr"
 };
@@ -262,7 +268,8 @@ static const std::unordered_set<std::string> I1TypeInstructions = {
 
 static const std::unordered_set<std::string> I2TypeInstructions = {
     "slli", "srli", "srai",
-    "slliw", "srliw", "sraiw"
+    "slliw", "srliw", "sraiw",
+    "rori", "roli"
 };
 
 static const std::unordered_set<std::string> I3TypeInstructions = {
@@ -295,10 +302,11 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", 
-    "gcd", "isprime", "binexp", "setmod", "check", "random",
+    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
+    "rori", "roli",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "sb", "sh", "sw", "sd",
     "beq", "bne", "blt", "bge", "bltu", "bgeu",
@@ -402,6 +410,8 @@ std::unordered_map<std::string, RTypeInstructionEncoding> R_type_instruction_enc
     {"setmod", {0b0110011, 0b000, 0b0001010}}, // O_GPR_C_GPR_C_GPR
     {"check", {0b0110011, 0b000, 0b0001111}}, // O_GPR_C_GPR_C_GPR
     {"random", {0b0110011, 0b000, 0b0001100}}, // O_GPR_C_GPR_C_GPR
+    {"ror", {0b0110011, 0b000, 0b0000011}}, // O_GPR_C_GPR_C_GPR
+    {"rol", {0b0110011, 0b000, 0b0000010}}, // O_GPR_C_GPR_C_GPR
 
     {"addw", {0b0111011, 0b000, 0b0000000}}, // O_GPR_C_GPR_C_GPR
     {"subw", {0b0111011, 0b000, 0b0100000}}, // O_GPR_C_GPR_C_GPR
@@ -456,6 +466,9 @@ std::unordered_map<std::string, I2TypeInstructionEncoding> I2_type_instruction_e
     {"slli", {0b0010011, 0b001, 0b000000}}, // O_GPR_C_GPR_C_I
     {"srli", {0b0010011, 0b101, 0b000000}}, // O_GPR_C_GPR_C_I
     {"srai", {0b0010011, 0b101, 0b010000}}, // O_GPR_C_GPR_C_I
+    // doubt
+    {"rori", {0b0010011, 0b101, 0b000001}}, // O_GPR_C_GPR_C_I
+    {"roli", {0b0010011, 0b101, 0b000011}}, // O_GPR_C_GPR_C_I
 
     {"slliw", {0b0011011, 0b001, 0b000000}}, // O_GPR_C_GPR_C_I
     {"srliw", {0b0011011, 0b101, 0b000000}}, // O_GPR_C_GPR_C_I
@@ -648,6 +661,8 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"setmod", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // setmod 
     {"check", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // check 
     {"random", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // random 
+    {"ror", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // ror 
+    {"rol", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // rol 
 
     {"addi", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"xori", {SyntaxType::O_GPR_C_GPR_C_I}},
@@ -658,6 +673,8 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"srai", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"slti", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"sltiu", {SyntaxType::O_GPR_C_GPR_C_I}},
+    {"rori", {SyntaxType::O_GPR_C_GPR_C_I}},
+    {"roli", {SyntaxType::O_GPR_C_GPR_C_I}},
 
     {"lb", {SyntaxType::O_GPR_C_I_LP_GPR_RP, SyntaxType::O_GPR_C_DL}},
     {"lh", {SyntaxType::O_GPR_C_I_LP_GPR_RP, SyntaxType::O_GPR_C_DL}},

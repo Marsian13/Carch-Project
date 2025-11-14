@@ -343,6 +343,31 @@ static std::string decode_fclass(uint16_t res) {
       return {static_cast<uint64_t>(result), false};
     }
 
+    case AluOp::kror: {
+      auto sa = static_cast<uint64_t>(a);     // value to rotate
+      auto sh = static_cast<uint64_t>(b);     // shift amount
+
+      auto result = static_cast<int64_t>(1);  // result
+
+      sh &= 63;  // keep shift amount in range 0–63
+
+      result = (sa >> sh) | (sa << (64 - sh));     // ror formula
+      std::cout << "first"<< std::endl;
+      return {static_cast<uint64_t>(result), false};
+    }    
+
+    case AluOp::krol: {
+      auto sa = static_cast<uint64_t>(a);     // value to rotate
+      auto sh = static_cast<uint64_t>(b);     // shift amount
+
+      auto result = static_cast<int64_t>(1);  // result
+
+      sh &= 63;  // keep shift amount in range 0–63
+
+      result = (sa << sh) | (sa >> (64 - sh));     // rol formula
+
+      return {static_cast<uint64_t>(result), false};
+    }    
     // till here
 
     default: return {0, false};

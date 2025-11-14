@@ -48,6 +48,8 @@ enum Instruction {
   ksetmod, // ksetmod
   kcheck, // kcheck
   krand, // krand
+  kror, // kror
+  krol, // krol
 
   kaddw, 
   ksubw, 
@@ -68,6 +70,8 @@ enum Instruction {
   kslliw, 
   ksrliw, 
   ksraiw,
+  krori, // krori
+  kroli, // kroli
   klb, 
   klh, 
   klw, 
@@ -252,6 +256,8 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::ksetmod,     0b0110011, -1, 0b000, -1, -1, 0b0001010), // ksetmod
   InstructionEncoding(Instruction::kcheck,      0b0110011, -1, 0b000, -1, -1, 0b0001111), // kcheck
   InstructionEncoding(Instruction::krand,       0b0110011, -1, 0b000, -1, -1, 0b0001100), // krand
+  InstructionEncoding(Instruction::kror,        0b0110011, -1, 0b000, -1, -1, 0b0000011), // kror
+  InstructionEncoding(Instruction::krol,        0b0110011, -1, 0b000, -1, -1, 0b0000010), // krol
 
   InstructionEncoding(Instruction::kmul,        0b0110011, -1, 0b000, -1, -1, 0b0000001), // kmul
   InstructionEncoding(Instruction::kmulh,       0b0110011, -1, 0b001, -1, -1, 0b0000001), // kmulh
@@ -285,6 +291,8 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::kxori,       0b0010011, -1, 0b100, -1, -1, -1), // kxori
   InstructionEncoding(Instruction::ksrli,       0b0010011, -1, 0b101, -1, -1, 0b0000000), // ksrli
   InstructionEncoding(Instruction::ksrai,       0b0010011, -1, 0b101, -1, -1, 0b0100000), // ksrai
+  InstructionEncoding(Instruction::krori,       0b0010011, -1, 0b101, -1, -1, 0b0000010), // krori
+  InstructionEncoding(Instruction::kroli,       0b0010011, -1, 0b101, -1, -1, 0b0000110), // kroli
   InstructionEncoding(Instruction::kori,        0b0010011, -1, 0b110, -1, -1, -1), // kori
   InstructionEncoding(Instruction::kandi,       0b0010011, -1, 0b111, -1, -1, -1), // kandi
 
