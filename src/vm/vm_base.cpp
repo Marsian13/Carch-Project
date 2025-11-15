@@ -105,7 +105,7 @@ int32_t VmBase::ImmGenerator(uint32_t instruction) {
 
     switch (opcode) {
         /*** I-TYPE (Load, alu Immediate, JALR, FPU Loads) ***/
-        case 0b0010011: // alu Immediate (ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI)
+        case 0b0010011: //std::cout << "running regular\n";// alu Immediate (ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI)
         case 0b0000011: // Load (LB, LH, LW, LD, LBU, LHU, LWU)
         case 0b1100111: // JALR
         case 0b0001111: // FENCE

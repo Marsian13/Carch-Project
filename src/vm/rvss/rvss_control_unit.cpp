@@ -8,7 +8,7 @@
 #include "vm/alu.h"
 
 #include <cstdint>
-#include <iostream>
+
 #include "common/instructions.h"
 using instruction_set::Instruction;
 using instruction_set::get_instr_encoding;
@@ -181,7 +181,6 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
             }
 
             case 0b0000011: { // kror
-                //std::cout<<"R type kror call"<<std::endl;
                 return alu::AluOp::kror;
                 break;
             }
@@ -352,7 +351,6 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
 
             // changes
             case 0b0000010: {// rori
-                std::cout << "I type rori call" << std::endl;
                 return alu::AluOp::kror;
                 break;
             }
@@ -360,11 +358,7 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::krol;
                 break;
             }
-            case 0b1000000: {// brevi
-                return alu::AluOp::kbrev;
-                break;
-            }
-            case 0b0110000: {// andni
+            case 0b0001010: {// andni
                 return alu::AluOp::kandn;
                 break;
             }

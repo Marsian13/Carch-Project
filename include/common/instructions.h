@@ -75,7 +75,6 @@ enum Instruction {
   ksraiw,
   krori, // krori
   kroli, // kroli
-  kbrevi, // kbrevi
   kandni, // kandni
   korni, // korni
   klb, 
@@ -302,9 +301,8 @@ inline constexpr std::array<InstructionEncoding, static_cast<size_t>(Instruction
   InstructionEncoding(Instruction::ksrai,       0b0010011, -1, 0b101, -1, -1, 0b0100000), // ksrai
   InstructionEncoding(Instruction::krori,       0b0010011, -1, 0b101, -1, -1, 0b0000010), // krori
   InstructionEncoding(Instruction::kroli,       0b0010011, -1, 0b101, -1, -1, 0b0000110), // kroli
-  InstructionEncoding(Instruction::kbrevi,       0b0010011, -1, 0b101, -1, -1, 0b1000000), // kbrevi
-  InstructionEncoding(Instruction::kandni,       0b0010011, -1, 0b101, -1, -1, 0b0110000), // kandni
-  InstructionEncoding(Instruction::korni,       0b0010011, -1, 0b101, -1, -1,  0b1100000), // korni
+  InstructionEncoding(Instruction::kandni,      0b0010011, -1, 0b101, -1, -1, 0b0001010), // kandni
+  InstructionEncoding(Instruction::korni,       0b0010011, -1, 0b101, -1, -1, 0b1100000), // korni
   InstructionEncoding(Instruction::kori,        0b0010011, -1, 0b110, -1, -1, -1), // kori
   InstructionEncoding(Instruction::kandi,       0b0010011, -1, 0b111, -1, -1, -1), // kandi
 

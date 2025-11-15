@@ -73,7 +73,6 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"srai", Instruction::ksrai},
     {"rori", Instruction::krori}, // added krori instruction
     {"roli", Instruction::kroli}, // added kroli instruction
-    {"brevi", Instruction::kbrevi}, // added kbrevi instruction
     {"andni", Instruction::kandni}, // added kandni instruction
     {"orni", Instruction::korni}, // added korni instruction
     {"slti", Instruction::kslti},
@@ -201,7 +200,7 @@ static const std::unordered_set<std::string> valid_instructions = {
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
-    "rori", "roli", "brevi", "andni", "orni",
+    "rori", "roli", "andni", "orni",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "sb", "sh", "sw", "sd",
     "beq", "bne", "blt", "bge", "bltu", "bgeu",
@@ -262,7 +261,7 @@ static const std::unordered_set<std::string> RTypeInstructions = {
 static const std::unordered_set<std::string> ITypeInstructions = {
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
-    "rori", "roli", "brevi", "andni", "orni",
+    "rori", "roli", "andni", "orni",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "jalr"
 };
@@ -277,7 +276,7 @@ static const std::unordered_set<std::string> I1TypeInstructions = {
 static const std::unordered_set<std::string> I2TypeInstructions = {
     "slli", "srli", "srai",
     "slliw", "srliw", "sraiw",
-    "rori", "roli", "brevi", "andni", "orni"
+    "rori", "roli", "andni", "orni"
 };
 
 static const std::unordered_set<std::string> I3TypeInstructions = {
@@ -315,7 +314,7 @@ static const std::unordered_set<std::string> BaseExtensionInstructions = {
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
     "addiw", "slliw", "srliw", "sraiw",
-    "rori", "roli", "brevi", "andni", "orni",
+    "rori", "roli", "andni", "orni",
     "lb", "lh", "lw", "ld", "lbu", "lhu", "lwu",
     "sb", "sh", "sw", "sd",
     "beq", "bne", "blt", "bge", "bltu", "bgeu",
@@ -481,8 +480,7 @@ std::unordered_map<std::string, I2TypeInstructionEncoding> I2_type_instruction_e
     
     {"rori", {0b0010011, 0b101, 0b000001}}, // O_GPR_C_GPR_C_I
     {"roli", {0b0010011, 0b101, 0b000011}}, // O_GPR_C_GPR_C_I
-    {"brevi", {0b0010011, 0b101, 0b100000}}, // O_GPR_C_GPR_C_I
-    {"andni", {0b0010011, 0b101, 0b011000}}, // O_GPR_C_GPR_C_I
+    {"andni", {0b0010011, 0b101, 0b000101}}, // O_GPR_C_GPR_C_I
     {"orni", {0b0010011, 0b101, 0b110000}}, // O_GPR_C_GPR_C_I
 
     {"slliw", {0b0011011, 0b001, 0b000000}}, // O_GPR_C_GPR_C_I
@@ -693,7 +691,6 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"sltiu", {SyntaxType::O_GPR_C_GPR_C_I}},
     {"rori", {SyntaxType::O_GPR_C_GPR_C_I}}, // rori
     {"roli", {SyntaxType::O_GPR_C_GPR_C_I}}, // roli
-    {"brevi", {SyntaxType::O_GPR_C_GPR_C_I}}, // brevi
     {"andni", {SyntaxType::O_GPR_C_GPR_C_I}}, // andni
     {"orni", {SyntaxType::O_GPR_C_GPR_C_I}}, // orni
 
