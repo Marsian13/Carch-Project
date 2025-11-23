@@ -68,7 +68,7 @@ void RVSSVM::Execute() {
   uint8_t rs2 = (current_instruction_ >> 20) & 0b11111;
 
   int32_t imm = ImmGenerator(current_instruction_);
-  std::cout<< "DEBUG : immediate value" << imm << std::endl;
+  // std::cout<< "DEBUG : immediate value" << imm << std::endl;
   uint64_t reg1_value = registers_.ReadGpr(rs1);
   uint64_t reg2_value = registers_.ReadGpr(rs2);
 

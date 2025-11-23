@@ -51,7 +51,6 @@ static std::string decode_fclass(uint16_t res) {
       auto sb = static_cast<int64_t>(b);
       int64_t result = sa + sb;
       bool overflow = __builtin_add_overflow(sa, sb, &result);
-      // std :: cout << "ADD done\n";
       return {static_cast<uint64_t>(result), overflow};
     }
     case AluOp::kAddw: {
@@ -245,13 +244,19 @@ static std::string decode_fclass(uint16_t res) {
       auto sb = static_cast<int64_t>(b);
       auto temp = static_cast<int64_t>(b);
 
+      if(sa == 0 && sb == 0){
+        return {static_cast<uint64_t>(-1), false}; // gcd(0, 0) is undefined
+      }
+
       while(sb != 0){
         temp = sb;
         sb = sa % sb;
         sa = temp;
       }
 
-      // std :: cout << "GCD done, it will give: " << sa << "\n";
+      if (sa < 0) sa = -sa;   // ensuring that gcd is positive
+
+      // std :: cout << "GCD ans: " << sa << "\n";
       return {static_cast<uint64_t>(sa), false};
     }
 
@@ -352,7 +357,6 @@ static std::string decode_fclass(uint16_t res) {
       sh &= 63;  // keep shift amount in range 0–63
 
       result = (sa >> sh) | (sa << (64 - sh));     // ror formula
-      std::cout << "first"<< std::endl;
       return {static_cast<uint64_t>(result), false};
     }    
 
@@ -365,7 +369,6 @@ static std::string decode_fclass(uint16_t res) {
       sh &= 63;  // keep shift amount in range 0–63
 
       result = (sa << sh) | (sa >> (64 - sh));     // rol formula
-
       return {static_cast<uint64_t>(result), false};
     }
 
