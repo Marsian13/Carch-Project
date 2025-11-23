@@ -1,10 +1,10 @@
-addi x2, x0, 3
-addi x3, x0, 8
+li x2, 8
+li x3, 13
 invmod x4, x2, x3
 
-# addi x2, x0, 10     # a = 10
-# addi x3, x0, 17     # m = 17
-# invmod x4, x2, x3   # expect x4 = 12
+# li x2, 10     # a = 10
+# li x3, 17     # m = 17
+# invmod x4, x2, x3   # expected x4 = 12
 
 # invmod ans, a, m
 # ----------------

@@ -480,7 +480,7 @@ std::unordered_map<std::string, I2TypeInstructionEncoding> I2_type_instruction_e
     
     {"rori", {0b0010011, 0b101, 0b000001}}, // O_GPR_C_GPR_C_I
     {"roli", {0b0010011, 0b101, 0b000011}}, // O_GPR_C_GPR_C_I
-    {"andni", {0b0010011, 0b101, 0b000101}}, // O_GPR_C_GPR_C_I
+    {"andni", {0b0010011, 0b101, 0b000111}}, // O_GPR_C_GPR_C_I
     {"orni", {0b0010011, 0b101, 0b110000}}, // O_GPR_C_GPR_C_I
 
     {"slliw", {0b0011011, 0b001, 0b000000}}, // O_GPR_C_GPR_C_I

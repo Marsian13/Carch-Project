@@ -358,7 +358,7 @@ alu::AluOp RVSSControlUnit::GetAluSignal(uint32_t instruction, bool ALUOp) {
                 return alu::AluOp::krol;
                 break;
             }
-            case 0b0001010: {// andni
+            case 0b0001110: {// andni
                 return alu::AluOp::kandn;
                 break;
             }
