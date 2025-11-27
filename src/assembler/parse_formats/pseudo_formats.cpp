@@ -352,7 +352,7 @@ bool Parser::parse_pseudo() {
       // step 6: binexp ans, a, m-2 -> here if ans is -1 that means invmod do not exist
       {
         ICUnit block;
-        block.setOpcode("binexp");
+        block.setOpcode("powmod");
         block.setLineNumber(currentToken().line_number);
         block.setInstructionIndex(instruction_index_);
         block.setRd(rd);

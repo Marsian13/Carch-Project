@@ -58,7 +58,7 @@ enum class AluOp {
     kSltu, ///< Unsigned set less than operation.
     kgcd, /// < GCD of 2 numbers
     kisprime, /// will return if a number is prime or not
-    kbinexp, /// binary exponentiation
+    kpowmod, /// binary exponentiation
     ksetmod, /// seting mod for invmod
     kcheck, /// check for gcd != 1
     krand, /// random number generator
@@ -159,7 +159,7 @@ inline std::ostream& operator<<(std::ostream& os, const AluOp& op) {
         case AluOp::kSltu: os << "kSltu"; break;
         case AluOp::kgcd: os << "kgcd"; break; // kgcd
         case AluOp::kisprime: os << "kisprime"; break; // kisprime
-        case AluOp::kbinexp: os << "kbinexp"; break; // kbinexp
+        case AluOp::kpowmod: os << "kpowmod"; break; // kpowmod
         case AluOp::ksetmod: os << "ksetmod"; break; // ksetmod
         case AluOp::kcheck: os << "kcheck"; break; // kcheck
         case AluOp::krand: os << "krand"; break; // krand

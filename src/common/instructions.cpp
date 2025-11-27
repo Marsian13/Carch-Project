@@ -29,7 +29,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
     {"sltu", Instruction::ksltu},
     {"gcd", Instruction::kgcd}, // added kgcd instruction
     {"isprime", Instruction::kisprime}, // added kisprime instruction
-    {"binexp", Instruction::kbinexp}, // added kbinexp instruction
+    {"powmod", Instruction::kpowmod}, // added kpowmod instruction
     {"setmod", Instruction::ksetmod}, // added ksetmod instruction
     {"check", Instruction::kcheck}, // added kcheck instruction
     {"random", Instruction::krand}, // added krand instruction
@@ -195,7 +195,7 @@ std::unordered_map<std::string, Instruction> instruction_string_map = {
 
 static const std::unordered_set<std::string> valid_instructions = {
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu",
-    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
+    "gcd", "isprime", "powmod", "setmod", "check", "random", "ror", "rol",
     "brev", "andn", "orn", 
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
@@ -244,7 +244,7 @@ static const std::unordered_set<std::string> valid_instructions = {
 static const std::unordered_set<std::string> RTypeInstructions = {
     // Base RV32I
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", 
-    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
+    "gcd", "isprime", "powmod", "setmod", "check", "random", "ror", "rol",
     "brev", "andn", "orn",
 
     // RV64
@@ -309,7 +309,7 @@ static const std::unordered_set<std::string> PseudoInstructions = {
 
 static const std::unordered_set<std::string> BaseExtensionInstructions = {
     "add", "sub", "and", "or", "xor", "sll", "srl", "sra", "slt", "sltu", 
-    "gcd", "isprime", "binexp", "setmod", "check", "random", "ror", "rol",
+    "gcd", "isprime", "powmod", "setmod", "check", "random", "ror", "rol",
     "brev", "andn", "orn",
     "addw", "subw", "sllw", "srlw", "sraw",
     "addi", "xori", "ori", "andi", "slli", "srli", "srai", "slti", "sltiu",
@@ -414,7 +414,7 @@ std::unordered_map<std::string, RTypeInstructionEncoding> R_type_instruction_enc
     {"sltu", {0b0110011, 0b011, 0b0000000}}, // O_GPR_C_GPR_C_GPR
     {"gcd", {0b0110011, 0b000, 0b0000101}}, // O_GPR_C_GPR_C_GPR
     {"isprime", {0b0110011, 0b000, 0b0000111}}, // O_GPR_C_GPR_C_GPR
-    {"binexp", {0b0110011, 0b000, 0b0000110}}, // O_GPR_C_GPR_C_GPR
+    {"powmod", {0b0110011, 0b000, 0b0000110}}, // O_GPR_C_GPR_C_GPR
     {"setmod", {0b0110011, 0b000, 0b0001010}}, // O_GPR_C_GPR_C_GPR
     {"check", {0b0110011, 0b000, 0b0001111}}, // O_GPR_C_GPR_C_GPR
     {"random", {0b0110011, 0b000, 0b0001100}}, // O_GPR_C_GPR_C_GPR
@@ -670,7 +670,7 @@ std::unordered_map<std::string, std::vector<SyntaxType>> instruction_syntax_map 
     {"sltu", {SyntaxType::O_GPR_C_GPR_C_GPR}},
     {"gcd", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // gcd
     {"isprime", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // isprime
-    {"binexp", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // binexp 
+    {"powmod", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // powmod 
     {"setmod", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // setmod 
     {"check", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // check 
     {"random", {SyntaxType::O_GPR_C_GPR_C_GPR}}, // random 

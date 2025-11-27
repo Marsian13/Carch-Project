@@ -282,7 +282,7 @@ static std::string decode_fclass(uint16_t res) {
       return {static_cast<uint64_t>(result ? 1 : -1), false};
     }
 
-    case AluOp::kbinexp: { 
+    case AluOp::kpowmod: { 
       auto base = static_cast<int64_t>(a);
       auto exp = static_cast<int64_t>(b);
 
